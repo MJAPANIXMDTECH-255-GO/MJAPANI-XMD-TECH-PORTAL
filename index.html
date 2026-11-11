@@ -14,7 +14,11 @@
       background: #080d18;
       color: white;
     }
-    header {
+   
+<button id="langBtn" style="padding:12px 18px;background:#1688ed;color:white;border:0;border-radius:8px;margin-top:12px;">
+🇹🇿 Kiswahili
+</button>
+ header {
       padding: 20px;
       background: #101a2c;
       border-bottom: 1px solid #263957;
@@ -147,6 +151,95 @@ searchInput.addEventListener("input", function () {
       ? ""
       : "none";
   });
+});
+</script>
+
+<script>
+const translations = {
+  en: {
+    welcome: "WELCOME TO MJAPANI XMD TECH",
+    description: "Explore Technology, Entertainment, Football, Artificial Intelligence and Cybersecurity.",
+    explore: "Explore Our Platform",
+    heading: "Explore Our Platform",
+    football: "Football Zone",
+    footballDesc: "Football news, fixtures, live scores and results.",
+    movies: "Movies Hub",
+    moviesDesc: "Movie news, trailers, reviews and entertainment.",
+    technology: "Technology Hub",
+    technologyDesc: "Latest technology, apps, software and tutorials.",
+    hacking: "Ethical Hacking",
+    hackingDesc: "Learn Linux, Python, networking and web security.",
+    ai: "MJAPANI AI",
+    aiDesc: "Your digital assistant for learning about MJAPANI XMD TECH.",
+    apps: "Apps & Downloads",
+    appsDesc: "Discover useful applications and software.",
+    learning: "Learning Center",
+    learningDesc: "Learn coding, web development and cloud computing.",
+    community: "Community",
+    communityDesc: "Connect, learn and share technology knowledge."
+  },
+
+  sw: {
+    welcome: "KARIBU MJAPANI XMD TECH",
+    description: "Gundua teknolojia, burudani, michezo na elimu ya cybersecurity.",
+    explore: "Gundua Mfumo Wetu",
+    heading: "Gundua Huduma Zetu",
+    football: "Sehemu ya Mpira",
+    footballDesc: "Habari za mpira, ratiba na matokeo ya mechi.",
+    movies: "Sehemu ya Filamu",
+    moviesDesc: "Habari za filamu, trailer na burudani.",
+    technology: "Teknolojia",
+    technologyDesc: "Teknolojia mpya, apps na mafunzo.",
+    hacking: "Ethical Hacking",
+    hackingDesc: "Jifunze Linux, Python na usalama wa tovuti.",
+    ai: "MJAPANI AI",
+    aiDesc: "Msaidizi wako wa kujifunza kuhusu MJAPANI XMD TECH.",
+    apps: "Apps na Downloads",
+    appsDesc: "Gundua programu na software muhimu.",
+    learning: "Kituo cha Mafunzo",
+    learningDesc: "Jifunze coding na utengenezaji wa tovuti.",
+    community: "Jumuiya",
+    communityDesc: "Ungana na wengine na shiriki maarifa ya teknolojia."
+  }
+};
+
+function setLanguage(lang) {
+  const t = translations[lang];
+
+  document.querySelector(".hero h1").textContent = t.welcome;
+  document.querySelector(".hero p").textContent = t.description;
+  document.querySelector(".hero .btn").textContent = t.explore;
+  document.querySelector(".section h2").textContent = t.heading;
+
+  const keys = [
+    "football", "movies", "technology", "hacking",
+    "ai", "apps", "learning", "community"
+  ];
+
+  document.querySelectorAll(".card").forEach((card, i) => {
+    card.querySelector("h3").textContent =
+      t[keys[i]];
+    card.querySelector("p").textContent =
+      t[keys[i] + "Desc"];
+  });
+
+  document.getElementById("langBtn").textContent =
+    lang === "en" ? "🇹🇿 Kiswahili" : "🇺🇸 English";
+
+  localStorage.setItem("mjapaniLanguage", lang);
+  document.documentElement.lang = lang;
+}
+
+const savedLanguage =
+  localStorage.getItem("mjapaniLanguage") || "en";
+
+setLanguage(savedLanguage);
+
+document.getElementById("langBtn").addEventListener("click", () => {
+  const nextLanguage =
+    document.documentElement.lang === "en" ? "sw" : "en";
+
+  setLanguage(nextLanguage);
 });
 </script>
 </body>
