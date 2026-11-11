@@ -81,6 +81,15 @@
 
 <section class="section" id="services">
   <h2>Explore Our Platform</h2>
+
+<div style="margin:20px 0;">
+  <input
+    type="search"
+    id="siteSearch"
+    placeholder="Search anything on MJAPANI XMD TECH..."
+    style="width:100%;padding:16px;border-radius:10px;border:1px solid #35a7ff;background:#111d30;color:white;font-size:15px;outline:none;"
+  >
+</div>
   <div class="grid">
     <div class="card" id="football">
       <h3>⚽ Football Zone</h3>
@@ -124,5 +133,21 @@
   <p>© 2026 MJAPANI XMD TECH</p>
 </footer>
 
+
+<script>
+const searchInput = document.getElementById("siteSearch");
+const cards = document.querySelectorAll(".card");
+
+searchInput.addEventListener("input", function () {
+  const search = this.value.toLowerCase();
+
+  cards.forEach(card => {
+    const content = card.textContent.toLowerCase();
+    card.style.display = content.includes(search)
+      ? ""
+      : "none";
+  });
+});
+</script>
 </body>
 </html>
