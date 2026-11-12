@@ -1,89 +1,98 @@
 
-const services = [
-  {
-    title: "AI Assistant",
-    description: "Explore multilingual AI tools and intelligent assistance."
-  },
-  {
-    title: "Cybersecurity",
-    description: "Learn, practise and improve your digital security skills."
-  },
-  {
-    title: "Tech Community",
-    description: "Connect, share ideas and learn with other members."
-  },
-  {
-    title: "Creator Marketplace",
-    description: "Discover digital products, tools and learning resources."
-  },
-  {
-    title: "Promote & Grow",
-    description: "Promote your channels, websites and digital services."
-  },
-  {
-    title: "Support Center",
-    description: "Get assistance through our support ticket system."
+"use client";
+
+import { useState } from "react";
+import { createClient } from "../../lib/supabase/client";
+
+export default function Register() {
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleRegister(e) {
+    e.preventDefault();
+    setLoading(true);
+    setMessage("");
+
+    try {
+      const supabase = createClient();
+
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: name,
+            username: username.toLowerCase().trim(),
+          },
+        },
+      });
+
+      if (error) throw error;
+
+      setMessage(
+        "Registration submitted. Check your email for a confirmation link."
+      );
+    } catch (error) {
+      setMessage(error.message || "Registration failed.");
+    } finally {
+      setLoading(false);
+    }
   }
-];
 
-export default function Home() {
   return (
-    <main>
-      <header>
-        <div className="container">
-          <div className="logo">mjapani tech.</div>
-        </div>
-      </header>
+    <main className="auth-container">
+      <h1>Create Account</h1>
 
-      <section className="hero">
-        <div className="container">
-          <p style={{ color: "#FFD700", marginBottom: 18 }}>
-            TECHNOLOGY WITHOUT BORDERS
-          </p>
+      <form onSubmit={handleRegister}>
+        <input
+          placeholder="Full Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
 
-          <h1>
-            Welcome to <span>MJAPANI XMD TECH</span>
-          </h1>
+        <input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          required
+        />
 
-          <p>
-            Discover technology, artificial intelligence,
-            cybersecurity, digital creativity and education
-            in one powerful platform.
-          </p>
+        <input
+          type="email"
+          placeholder="Email Address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
 
-          <div className="actions">
-            <a className="btn btn-primary" href="/register">
-              Create Account
-            </a>
+        <input
+          type="password"
+          placeholder="Password (minimum 6 characters)"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          minLength={6}
+          required
+        />
 
-            <a className="btn btn-secondary" href="/login">
-              Sign In
-            </a>
-          </div>
-        </div>
-      </section>
+        <button className="btn btn-primary" type="submit" disabled={loading}>
+          {loading ? "Creating Account..." : "Create Account"}
+        </button>
+      </form>
 
-      <section>
-        <div className="container">
-          <h2 className="section-title">Explore Our Platform</h2>
-
-          <div className="cards">
-            {services.map((service) => (
-              <article className="card" key={service.title}>
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <footer>
-        <p>mjapani tech. — LEARN • BUILD • SECURE</p>
-        <p style={{ marginTop: 10 }}>
-          © {new Date().getFullYear()} MJAPANI XMD TECH
+      {message && (
+        <p role="status" style={{ marginTop: 18, textAlign: "center" }}>
+          {message}
         </p>
-      </footer>
+      )}
+
+      <p style={{ textAlign: "center", marginTop: 20 }}>
+        Already have an account? <a href="/login">Sign In</a>
+      </p>
     </main>
   );
 }
